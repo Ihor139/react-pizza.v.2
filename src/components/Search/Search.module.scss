@@ -1,0 +1,48 @@
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.searchIco {
+  position: absolute;
+  left: 5px;
+  top: 46%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  svg {
+    width: 100%;
+    height: 100%;
+    * {
+      fill: rgb(133, 133, 133);
+    }
+  }
+}
+.input {
+  width: 100%;
+  outline: none;
+  padding: 8px 32px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  &:focus {
+    border-color: darken($color: #ccc, $amount: 20);
+  }
+}
+.searchClose {
+  cursor: pointer;
+  position: absolute;
+  z-index: 5;
+  right: 5px;
+  top: 46%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  svg {
+    width: 100%;
+    height: 100%;
+    * {
+      fill: rgb(133, 133, 133);
+    }
+  }
+}
