@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import styles from './CartEmpty.module.scss'
+import styles from './CartEmpty.module.scss';
 
 import EmptyCartImg from '../../assets/img/empty-cart.png';
 
-export const CartEmpty = () => {
+export const CartEmpty: React.FC = () => {
   return (
     <div className={`${styles.indent} cart cart--empty`}>
       <h2>

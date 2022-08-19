@@ -1,42 +1,52 @@
-import React from 'react';
-import qs from 'qs';
-import { Link, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import React from "react";
+import qs from "qs";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-import { Categories } from '../components/Categories';
-import { PizzaBlock } from '../components/PizzaBlock';
-import { Sort, sortList } from '../components/Sort';
-import { Skeleton } from '../components/PizzaBlock/Skeleton';
-import { Pagination } from '../components/Pagination';
+import { Categories } from "../components/Categories";
+import { PizzaBlock, PizzaBlockProps } from "../components/PizzaBlock";
+import { Sort, sortList } from "../components/Sort";
+import { Skeleton } from "../components/PizzaBlock/Skeleton";
+import { Pagination } from "../components/Pagination";
 
-import { setIsLoading, fetchItems } from '../redux/slices/pizzaSlice';
-import { setFilterParams } from '../redux/slices/filterSlice';
-import { setCurrentPage } from '../redux/slices/paginationSlice';
+import {
+  fetchItems,
+  selectPizza,
+  setIsLoading,
+} from "../redux/slices/pizzaSlice";
+import { filterSelect, setFilterParams } from "../redux/slices/filterSlice";
+import {
+  selectCurrentPage,
+  setCurrentPage,
+} from "../redux/slices/paginationSlice";
+import { selectSearchTerm } from "../redux/slices/searchSlice";
 
-export const Home = () => {
+export const Home: React.FC = () => {
   //navigate
   const navigate = useNavigate();
 
   // redux
   const dispatch = useDispatch();
-  const { categoryId, sortType } = useSelector((state) => state.filterReducer);
-  const searchTerm = useSelector((state) => state.searchReducer.value);
-  const currentPage = useSelector((state) => state.paginationReducer.value);
-  const { items, status } = useSelector((state) => state.pizzaReducer);
+  const { categoryId, sortType } = useSelector(filterSelect);
+  const searchTerm = useSelector(selectSearchTerm);
+  const currentPage = useSelector(selectCurrentPage);
+  const { items, status } = useSelector(selectPizza);
 
   //refs
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
   const getPizza = async () => {
-    dispatch(setIsLoading('loading'));
+    dispatch(setIsLoading("loading"));
 
-    const sortBy = sortType.sortProperty.replace('_', '');
-    const order = sortType.sortProperty.includes('_') ? 'asc' : 'desc';
-    const category = categoryId > 0 ? `category=${categoryId}` : '';
-    const search = searchTerm ? `&search=${searchTerm}` : '';
+    const sortBy = sortType.sortProperty.replace("_", "");
+    const order = sortType.sortProperty.includes("_") ? "asc" : "desc";
+    const category = categoryId > 0 ? `category=${categoryId}` : "";
+    const search = searchTerm ? `&search=${searchTerm}` : "";
 
     // вынесли логику получения данных с UI в redux
+
+    // @ts-ignore ?????????????
     dispatch(fetchItems({ sortBy, order, category, search, currentPage }));
 
     // try {
@@ -44,16 +54,20 @@ export const Home = () => {
     // } catch (error) {
     //   console.error(error);
     // } finally {
-    //   dispatch(setIsLoading('sucsses'));
+    //   dispatch(setIsLoading('successes'));
     // }
   };
 
   React.useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
-      const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty);
 
-      dispatch(setFilterParams({ ...params, sort }));
+      const sortType = sortList.find(
+        (obj) => obj.sortProperty === params.sortProperty
+      );
+      console.log(sortType);
+
+      dispatch(setFilterParams({ ...params, sortType }));
       dispatch(setCurrentPage(params.currentPage));
       isSearch.current = true;
     }
@@ -83,10 +97,12 @@ export const Home = () => {
 
   const renderPizza = () => {
     // подходит для поиска по статичным данным
-    const filteredItems = items.filter((item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    const filteredItems = items.filter((item: PizzaBlockProps) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    return filteredItems.map((item) => <PizzaBlock {...item} key={item.id} />);
+    return filteredItems.map((item: PizzaBlockProps) => (
+      <PizzaBlock {...item} key={item.id} />
+    ));
   };
 
   return (
@@ -97,7 +113,7 @@ export const Home = () => {
           <Sort />
         </div>
         <h2 className="content__title">Все пиццы</h2>
-        {status === 'error' ? (
+        {status === "error" ? (
           <div className="error__info">
             <h2>
               Ошибка <b>😕</b>
@@ -114,7 +130,7 @@ export const Home = () => {
         ) : (
           <>
             <div className="content__items">
-              {status === 'loading'
+              {status === "loading"
                 ? [...Array(4)].map((item, ind) => <Skeleton key={ind} />)
                 : renderPizza()}
             </div>

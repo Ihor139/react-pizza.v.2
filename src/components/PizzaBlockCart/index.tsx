@@ -1,16 +1,39 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { addItem, minusItem, removeItem } from '../../redux/slices/cartSlice';
+import React from "react";
+import { useDispatch } from "react-redux";
+import {
+  addItem,
+  CartItem as CartItemType,
+  minusItem,
+  removeItem,
+} from "../../redux/slices/cartSlice";
 
-export const PizzaBlockCart = ({ id, imageUrl, name, price, count, type, size }) => {
+type PizzaBlockCartProps = {
+  id: string;
+  imageUrl: string;
+  name: string;
+  price: number;
+  count: number;
+  type: string;
+  size: number;
+};
+
+export const Index: React.FC<PizzaBlockCartProps> = ({
+  id,
+  imageUrl,
+  name,
+  price,
+  count,
+  type,
+  size,
+}) => {
   const dispatch = useDispatch();
 
   const onClickPlus = () => {
-    dispatch(addItem({ id }));
+    dispatch(addItem({ id } as CartItemType));
   };
 
   const onClickMinus = () => {
-    dispatch(minusItem({ id }));
+    dispatch(minusItem(id));
   };
 
   const onClickRemove = () => {
@@ -24,18 +47,22 @@ export const PizzaBlockCart = ({ id, imageUrl, name, price, count, type, size })
       </div>
       <div className="cart__item-info">
         <h3>{name}</h3>
-        <p>{type} тесто, {size} см.</p>
+        <p>
+          {type} тесто, {size} см.
+        </p>
       </div>
       <div className="cart__item-count">
         <button
           onClick={onClickMinus}
-          className="button button--outline button--circle cart__item-count-minus">
+          className="button button--outline button--circle cart__item-count-minus"
+        >
           <svg
             width="10"
             height="10"
             viewBox="0 0 10 10"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M5.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
               fill="#EB5A1E"
@@ -49,13 +76,15 @@ export const PizzaBlockCart = ({ id, imageUrl, name, price, count, type, size })
         <b>{count}</b>
         <button
           onClick={onClickPlus}
-          className="button button--outline button--circle cart__item-count-plus">
+          className="button button--outline button--circle cart__item-count-plus"
+        >
           <svg
             width="10"
             height="10"
             viewBox="0 0 10 10"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M5.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
               fill="#EB5A1E"
@@ -71,13 +100,17 @@ export const PizzaBlockCart = ({ id, imageUrl, name, price, count, type, size })
         <b>{count * price} $</b>
       </div>
       <div className="cart__item-remove">
-        <button onClick={onClickRemove} className="button button--outline button--circle">
+        <button
+          onClick={onClickRemove}
+          className="button button--outline button--circle"
+        >
           <svg
             width="10"
             height="10"
             viewBox="0 0 10 10"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M5.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
               fill="#EB5A1E"

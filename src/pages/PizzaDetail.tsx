@@ -2,10 +2,16 @@ import axios from 'axios';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-export const PizzaDetail = () => {
+interface Pizza {
+  imageUrl: string;
+  name: string;
+  price: number;
+}
+
+export const PizzaDetail: React.FC = () => {
   const { id } = useParams();
 
-  const [pizza, setPizza] = React.useState({});
+  const [pizza, setPizza] = React.useState<Pizza>();
 
   React.useEffect(() => {
     (async () => {
@@ -13,6 +19,8 @@ export const PizzaDetail = () => {
       setPizza(data);
     })();
   }, []);
+
+  if (!pizza) return <div className="container pizza-detail">Download..</div>;
 
   return (
     <div className="container pizza-detail">

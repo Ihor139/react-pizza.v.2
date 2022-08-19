@@ -8,10 +8,10 @@ import { Search } from '../Search';
 
 import styles from './Header.module.scss';
 
-export const Header = () => {
-  const { items, totalPrice } = useSelector((state) => state.cartReducer);
+export const Header: React.FC = () => {
+  const { items, totalPrice } = useSelector((state: any) => state.cartReducer);
 
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+  const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
 
   return (
     <div className="header">

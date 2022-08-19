@@ -6,7 +6,7 @@ import styles from './Pagination.module.scss';
 
 import { setCurrentPage } from '../../redux/slices/paginationSlice';
 
-export const Pagination = () => {
+export const Pagination: React.FC = () => {
   const dispatch = useDispatch();
 
   return (
@@ -18,7 +18,6 @@ export const Pagination = () => {
         pageRangeDisplayed={5}
         pageCount={3}
         previousLabel="<"
-        renderOnZeroPageCount={null}
       />
     </div>
   );
