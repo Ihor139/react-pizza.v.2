@@ -1,25 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
-
-export type Sort = {
-  name: string;
-  sortProperty: string;
-};
-
-interface FilterSliceState {
-  categoryId: number;
-  sortType: Sort;
-}
+import { SortPropertyEnum } from "../../../components/Sort";
+import { FilterSliceState, Sort } from "./types";
 
 const initialState: FilterSliceState = {
   categoryId: 0,
   sortType: {
     name: "популярности ↓",
-    sortProperty: "rating",
+    sortProperty: SortPropertyEnum.RATING_DESC,
   },
 };
 
-export const filterSlice = createSlice({
+export const slice = createSlice({
   name: "filter",
   initialState,
   reducers: {
@@ -37,13 +28,7 @@ export const filterSlice = createSlice({
   },
 });
 
-export const filterSelect = (state: RootState) => state.filterReducer;
-export const sortSelect = (state: RootState) => state.filterReducer.sortType;
-export const categorySelect = (state: RootState) =>
-  state.filterReducer.categoryId;
-
 // Action creators are generated for each case reducer function
-export const { setCategoryId, setSortType, setFilterParams } =
-  filterSlice.actions;
+export const { setCategoryId, setSortType, setFilterParams } = slice.actions;
 
-export default filterSlice.reducer;
+export default slice.reducer;
